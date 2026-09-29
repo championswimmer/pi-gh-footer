@@ -1,6 +1,6 @@
 # pi-gh-footer
 
-Compact PR status for [Pi](https://github.com/badlogic/pi-mono) + [pi-footer](https://www.npmjs.com/package/pi-footer): ` PR #41208 · 3 1 0`. Nerd Font glyphs, colored passed/running/failed dots, and an OSC 8 link on **only** the PR number.
+Compact PR status for [Pi](https://github.com/badlogic/pi-mono) + [pi-footer](https://www.npmjs.com/package/pi-footer): ` #41208 · • 3  • 1  • 0`. Nerd Font glyphs, colored passed/running/failed dots, and an OSC 8 link on **only** the PR number.
 
 Requires `git`, authenticated `gh`, a Nerd Font, and an OSC 8-capable terminal.
 
@@ -23,6 +23,6 @@ Disable `pi-pr-status` if installed (it writes the same status key); reload Pi. 
 | `gh-pr-passed` / `gh-pr-running` / `gh-pr-failed` | raw counts, for custom icons/colors |
 | `gh-pr-repo` / `gh-pr-title` | repository / title |
 
-Example custom widgets: `gh-pr-number` with icon ` PR `, then the three raw counts with icon `` and foregrounds green/yellow/red. The current branch's PR takes priority; otherwise a PR URL in user input is used. Updates every 30 seconds.
+Example custom widgets: `gh-pr-number` with icon ` `, then the three raw counts with icon `• ` and foregrounds green/yellow/red. The current branch's PR takes priority; otherwise a PR URL in user input is used. Updates every 30 seconds.
 
 Development: `npm ci && npm test && npm run typecheck`.

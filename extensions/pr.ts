@@ -68,11 +68,13 @@ function linkedNumber(pr: PrInfo): string {
 function formatChecks(pr: PrInfo, paint: Paint): string | undefined {
   const { passed, running, failed } = pr.checks;
   if (!passed && !running && !failed) return undefined;
-  return `${paint(passed ? "success" : "dim", `\uf111${passed}`)} ${paint(running ? "warning" : "dim", `\uf111${running}`)} ${paint(failed ? "error" : "dim", `\uf111${failed}`)}`;
+  // A full-size Nerd Font circle and its adjacent digit can overlap in terminals.
+  // Use a small typographic dot with breathing room; the PR icon stays Nerd Font.
+  return `${paint(passed ? "success" : "dim", `• ${passed}`)}  ${paint(running ? "warning" : "dim", `• ${running}`)}  ${paint(failed ? "error" : "dim", `• ${failed}`)}`;
 }
 
 export function formatPr(pr: PrInfo, paint: Paint): string {
-  const result = `${paint(stateColor(pr), "\ue725")} PR ${linkedNumber(pr)}`;
+  const result = `${paint(stateColor(pr), "\uf407")} ${linkedNumber(pr)}`;
   const checks = formatChecks(pr, paint);
   return checks ? `${result} · ${checks}` : result;
 }
@@ -84,7 +86,7 @@ export function formatPrWidgets(pr: PrInfo, paint: Paint): Record<string, string
   return {
     "gh-pr": formatPr(pr, paint),
     "gh-pr-number": linkedNumber(pr),
-    "gh-pr-state-icon": paint(stateColor(pr), "\ue725"),
+    "gh-pr-state-icon": paint(stateColor(pr), "\uf407"),
     "gh-pr-state": pr.state.toLowerCase(),
     "gh-pr-checks": formatChecks(pr, paint) ?? null,
     "gh-pr-passed": String(pr.checks.passed),
