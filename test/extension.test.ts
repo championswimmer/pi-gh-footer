@@ -67,7 +67,7 @@ fi
     const reply = await fire("input", { source: "user", text: "https://github.com/owner/repo/pull/246" });
     assert.deepEqual(reply, { action: "continue" });
     await until(() => !!statuses.at(-1)?.includes("#246"));
-    assert.match(statuses.at(-1)!, /• 0  • 1  • 0/);
+    assert.match(statuses.at(-1)!, / 0   1   0/);
     assert.doesNotMatch(statuses.at(-1)!, / PR /);
     assert.deepEqual(events.find((event) => event.widgetId === "gh-pr"), { widgetId: "gh-pr", value: statuses.at(-1)! });
     assert.deepEqual(events.find((event) => event.widgetId === "gh-pr-passed"), { widgetId: "gh-pr-passed", value: "0" });

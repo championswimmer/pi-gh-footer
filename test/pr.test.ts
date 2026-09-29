@@ -28,11 +28,11 @@ test("formats a compact, colored status and hyperlinks only the PR number", () =
   ] });
   assert.ok(pr);
   const status = formatPr(pr, (color, text) => `<${color}>${text}</${color}>`);
-  assert.equal(status, "<success></success> \x1b]8;;https://github.com/railwayapp/mono/pull/41208\x1b\\#41208\x1b]8;;\x1b\\ · <success>• 1</success>  <warning>• 1</warning>  <error>• 1</error>");
+  assert.equal(status, "<success></success> \x1b]8;;https://github.com/railwayapp/mono/pull/41208\x1b\\#41208\x1b]8;;\x1b\\ · <success> 1</success>  <warning> 1</warning>  <error> 1</error>");
   assert.ok(!status.includes("checks passed"));
   assert.ok(!status.includes(" PR "));
   assert.ok(!status.endsWith(pr.url));
-  assert.match(formatPr({ ...pr, checks: { passed: 10, running: 0, failed: 0 } }, (_, text) => text), /· • 10  • 0  • 0$/);
+  assert.match(formatPr({ ...pr, checks: { passed: 10, running: 0, failed: 0 } }, (_, text) => text), /·  10   0   0$/);
   assert.equal(formatPr({ ...pr, checks: { passed: 0, running: 0, failed: 0 } }, (_, text) => text).includes("·"), false);
   assert.match(formatPr({ ...pr, state: "CLOSED" }, (c, t) => `<${c}>${t}</${c}>`), /^<error>/);
   assert.match(formatPr({ ...pr, state: "MERGED" }, (c, t) => `<${c}>${t}</${c}>`), /^<warning>/);
@@ -52,6 +52,6 @@ test("composable pi-footer event values allow per-widget icons, colors and order
   assert.equal(widgets["gh-pr-repo"], "owner/repo");
   assert.equal(widgets["gh-pr-title"], "Add tests ]8;;evil ");
   assert.deepEqual([widgets["gh-pr-passed"], widgets["gh-pr-running"], widgets["gh-pr-failed"]], ["1", "0", "0"]);
-  assert.equal(widgets["gh-pr-checks"], "• 1  • 0  • 0");
+  assert.equal(widgets["gh-pr-checks"], " 1   0   0");
   assert.equal(widgets["gh-pr-state-icon"], "");
 });

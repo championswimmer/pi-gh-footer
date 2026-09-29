@@ -68,9 +68,9 @@ function linkedNumber(pr: PrInfo): string {
 function formatChecks(pr: PrInfo, paint: Paint): string | undefined {
   const { passed, running, failed } = pr.checks;
   if (!passed && !running && !failed) return undefined;
-  // A full-size Nerd Font circle and its adjacent digit can overlap in terminals.
-  // Use a small typographic dot with breathing room; the PR icon stays Nerd Font.
-  return `${paint(passed ? "success" : "dim", `• ${passed}`)}  ${paint(running ? "warning" : "dim", `• ${running}`)}  ${paint(failed ? "error" : "dim", `• ${failed}`)}`;
+  // Octicons: check-circle, clock, x-circle. Leave a cell between each
+  // Nerd Font glyph and its count to avoid overlap in terminal font fallback.
+  return `${paint(passed ? "success" : "dim", `\uf49e ${passed}`)}  ${paint(running ? "warning" : "dim", `\uf43a ${running}`)}  ${paint(failed ? "error" : "dim", `\uf52f ${failed}`)}`;
 }
 
 export function formatPr(pr: PrInfo, paint: Paint): string {
