@@ -68,9 +68,13 @@ function linkedNumber(pr: PrInfo): string {
 function formatChecks(pr: PrInfo, paint: Paint): string | undefined {
   const { passed, running, failed } = pr.checks;
   if (!passed && !running && !failed) return undefined;
-  // Octicons: check-circle, clock, x-circle. Leave a cell between each
-  // Nerd Font glyph and its count to avoid overlap in terminal font fallback.
-  return `${paint(passed ? "success" : "dim", `\uf49e ${passed}`)}  ${paint(running ? "warning" : "dim", `\uf43a ${running}`)}  ${paint(failed ? "error" : "dim", `\uf52f ${failed}`)}`;
+  // Octicons: check-circle, clock, x-circle. Only show states that actually
+  // occur; leave room between each glyph and its count for font fallback.
+  const parts: string[] = [];
+  if (passed) parts.push(paint("success", `\uf49e  ${passed}`));
+  if (running) parts.push(paint("warning", `\uf43a  ${running}`));
+  if (failed) parts.push(paint("error", `\uf52f  ${failed}`));
+  return parts.join("  ");
 }
 
 export function formatPr(pr: PrInfo, paint: Paint): string {
@@ -89,9 +93,9 @@ export function formatPrWidgets(pr: PrInfo, paint: Paint): Record<string, string
     "gh-pr-state-icon": paint(stateColor(pr), "\uf407"),
     "gh-pr-state": pr.state.toLowerCase(),
     "gh-pr-checks": formatChecks(pr, paint) ?? null,
-    "gh-pr-passed": String(pr.checks.passed),
-    "gh-pr-running": String(pr.checks.running),
-    "gh-pr-failed": String(pr.checks.failed),
+    "gh-pr-passed": pr.checks.passed ? String(pr.checks.passed) : null,
+    "gh-pr-running": pr.checks.running ? String(pr.checks.running) : null,
+    "gh-pr-failed": pr.checks.failed ? String(pr.checks.failed) : null,
     "gh-pr-repo": pr.repo,
     "gh-pr-title": pr.title || null,
   };

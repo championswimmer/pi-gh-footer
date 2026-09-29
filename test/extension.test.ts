@@ -67,16 +67,17 @@ fi
     const reply = await fire("input", { source: "user", text: "https://github.com/owner/repo/pull/246" });
     assert.deepEqual(reply, { action: "continue" });
     await until(() => !!statuses.at(-1)?.includes("#246"));
-    assert.match(statuses.at(-1)!, / 0   1   0/);
+    assert.match(statuses.at(-1)!, /·   1$/);
     assert.doesNotMatch(statuses.at(-1)!, / PR /);
     assert.deepEqual(events.find((event) => event.widgetId === "gh-pr"), { widgetId: "gh-pr", value: statuses.at(-1)! });
-    assert.deepEqual(events.find((event) => event.widgetId === "gh-pr-passed"), { widgetId: "gh-pr-passed", value: "0" });
+    assert.equal(events.some((event) => event.widgetId === "gh-pr-passed"), false);
     assert.deepEqual(events.find((event) => event.widgetId === "gh-pr-running"), { widgetId: "gh-pr-running", value: "1" });
     assert.deepEqual(events.find((event) => event.widgetId === "gh-pr-number")?.value?.includes("#246"), true);
 
     process.env.GH_BRANCH_PR = '{"number":77,"url":"https://github.com/owner/repo/pull/77","state":"OPEN","statusCheckRollup":[{"name":"CI","conclusion":"SUCCESS"}]}';
     await fire("session_start", {}, ctx);
     await until(() => !!statuses.at(-1)?.includes("#77"));
+    assert.ok(events.some((event) => event.widgetId === "gh-pr-running" && event.value === null));
     await fire("input", { source: "user", text: "https://github.com/owner/repo/pull/246" });
     await new Promise((resolve) => setTimeout(resolve, 100));
     assert.match(statuses.at(-1)!, /#77/);
